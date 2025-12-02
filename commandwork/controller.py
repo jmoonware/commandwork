@@ -3,11 +3,10 @@ import threading
 import time
 from collections import deque
 import sys,traceback
-from autopool.logic.worker import *
+from worker import *
 
 class Controller(Worker):
 	def Init(self,logFile="log.txt",settings=None):
-#		super().__init__(settings=settings)
 		self.timeout=10 # allow this time for orderly shutdown
 		self.done=False
 		# internal variables
@@ -24,26 +23,8 @@ class Controller(Worker):
 		# keep count of exceptions
 		self.max_exception_count=10 # die after this many command exceptions
 		self.once=False # if true, end controller loop when idle
-#	def Start(self):
-#		if self._thread!=None:
-#			self.Stop()
-#		self._thread=threading.Thread(target=self._loop)
-#		self.done=False
-#		self._thread.daemon=True
-#		self._thread.start()
-#		self.logger.info("Controller started...")
-#	def Stop(self):
-#		self.done=True
-#		if self.Status():
-#			self._thread.join(self.timeout)
-#			if self.Status(): 
-#				self.logger.error("{0} timeout during Stop".format(self))		
-#			self.logger.info("Controller stopped")
-#		else:
-#			self.logger.warning("Controller already stopped")
 	def StopRunningCommands(self):
 		stillRunning=[]
-#		self.logger.debug("{0}:  Shutting down commands...".format(self))
 		while len(self.running_commands) > 0:
 			c=self.running_commands.popleft()
 			self.logger.debug("{0} {1} Command Stop".format(self,c))
@@ -69,7 +50,6 @@ class Controller(Worker):
 		self.logger.info(format("{}: Controller started".format(self)))
 		self.total_running_exceptions=0
 	def Execute(self):
-#	while not self.done and self.exception_count+total_running_exceptions < self.max_exception_count:
 		try:
 			next_command=None
 			with self.recipe_lock:

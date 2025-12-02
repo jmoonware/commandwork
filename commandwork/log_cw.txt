@@ -1,0 +1,7 @@
+2025-12-01 15:19:04,643	CRITICAL	Logging Started, level=10
+2025-12-01 15:19:24,761	DEBUG	Worker[0x75c1cfe87260](DN=False,EC=0,TO=5,BK=True,LC=1,LI=1) Generic init
+2025-12-01 15:20:20,771	INFO	Controller[0x75c1cfe319a0](DN=False,EC=0,THD=True,PC=0,RC=0): Controller started
+2025-12-01 15:20:20,772	DEBUG	Worker[0x75c1cfe87260](DN=False,EC=0,TO=5,BK=True,LC=1,LI=1) Generic Enter
+2025-12-01 15:20:20,772	DEBUG	Worker[0x75c1cfe87260](DN=False,EC=0,TO=5,BK=True,LC=1,LI=1) Execute() is blank
+2025-12-01 15:20:21,773	DEBUG	Worker[0x75c1cfe87260](DN=False,EC=0,TO=5,BK=True,LC=0,LI=1) Generic Exit
+2025-12-01 15:20:24,775	INFO	Controller[0x75c1cfe319a0](DN=True,EC=0,THD=True,PC=1,RC=0): Controller exit

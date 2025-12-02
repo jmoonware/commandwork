@@ -14,10 +14,13 @@ class Worker:
 		self.loop_count=1 # default is one-shot
 		self.loop_interval=1 # s
 		self._thread=None
+		self.branch_tag=None
+		self.branch_to=None
 		if settings:
 			for k in settings:
 				self.__dict__[k]=settings[k]
 		self.logger=logging.getLogger(__name__)
+		print("Name = " + __name__)
 		self.settings=settings
 		try:
 			self.Init() 
