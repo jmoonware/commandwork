@@ -20,7 +20,7 @@ class Worker:
 			for k in settings:
 				self.__dict__[k]=settings[k]
 		if settings and 'logger' in settings:
-			self.logger=logger
+			self.logger=settings['logger']
 		else:
 			self.logger=logging.getLogger(__name__)
 		self.settings=settings
