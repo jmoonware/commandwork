@@ -19,8 +19,10 @@ class Worker:
 		if settings:
 			for k in settings:
 				self.__dict__[k]=settings[k]
-		self.logger=logging.getLogger(__name__)
-		print("Name = " + __name__)
+		if settings and 'logger' in settings:
+			self.logger=logger
+		else:
+			self.logger=logging.getLogger(__name__)
 		self.settings=settings
 		try:
 			self.Init() 
