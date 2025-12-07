@@ -2,6 +2,7 @@ import logging
 import threading
 import time
 import sys,traceback
+from commandwork.cwlogger import *
 
 class Worker:
 	def __init__(self,settings=None):
@@ -16,13 +17,18 @@ class Worker:
 		self._thread=None
 		self.branch_tag=None
 		self.branch_to=None
-		if settings:
-			for k in settings:
-				self.__dict__[k]=settings[k]
-		if settings and 'logger' in settings:
-			self.logger=settings['logger']
-		else:
-			self.logger=logging.getLogger(__name__)
+		try:
+			if settings:
+				for k in settings:
+					self.__dict__[k]=settings[k]
+			if settings and 'log_queue' in settings:
+				# we want a specific logger for this Worker
+				self.logger, handlers = StartDataLogging(log_queue=settings['log_queue'])
+			else:
+				# use the current logging module
+				self.logger=logging.getLogger(__name__)
+		except Exception as ex:
+			self._exception_handler(ex, "ERROR worker __init__: {0}".format(ex))
 		self.settings=settings
 		try:
 			self.Init() 
@@ -37,12 +43,17 @@ class Worker:
 		name=n.split('.')[-1].split(' ')[0]
 		addr=n.split('.')[-1].split(' ')[-1].split('>')[0]
 		return("{0}[{1}](DN={2},EC={3}".format(name,addr,self.done,self.exception_count))
-	def _exception_handler(self,ex,msg):
-		self.done=True 
+	def _exception_handler(self,ex,msg, fatal=True):
+		if fatal:
+			self.done=True 
 		self.logger=logging.getLogger(__name__)
-		self.logger.error("{0} {1} {2}".format(self,msg,ex))
 		exc_type, exc_value, exc_traceback = sys.exc_info()
-		self.logger.debug(traceback.format_tb(exc_traceback))
+		if self.logger!=None:
+			self.logger.error("{0} {1} {2}".format(self,msg,ex))
+			self.logger.debug(traceback.format_tb(exc_traceback))
+		else: # try to use stdout as last resort
+			print("{0} {1} {2}".format(self,msg,ex))
+			print(traceback.format_tb(exc_traceback))
 		self.exception=ex
 		self.exception_count+=1
 	def Run(self):
@@ -95,11 +106,11 @@ class Worker:
 		except Exception as ex:
 			self._exception_handler(ex,"In _loop:")
 	def Execute(self): # override this function for Run()
-		self.logger.debug("{0} Execute() is blank".format(self))
+		self.logger.info("{0} Execute() is blank".format(self))
 	def Enter(self): # override for one-time first things in Run()
-		self.logger.debug("{0} Generic Enter".format(self))
+		self.logger.info("{0} Generic Enter".format(self))
 		return
 	def Exit(self): # override for one-time last things in Run()
-		self.logger.debug("{0} Generic Exit".format(self))
+		self.logger.info("{0} Generic Exit".format(self))
 		return
 
