@@ -2,7 +2,7 @@
 import logging
 import logging.handlers
 
-def StartDataLogging(log_file='log_cw.txt',level=logging.DEBUG,thing=1,log_queue=None):
+def StartDataLogging(log_file='log_cw.txt',level=logging.DEBUG,log_queue=None):
 	logger = logging.getLogger(__name__)
 #	logFormatString='\t'.join(['%(asctime)s.%(msecs)03d','%(levelname)s','%(message)s'])
 	logFormatString='\t'.join(['%(asctime)s','%(levelname)s','%(message)s'])

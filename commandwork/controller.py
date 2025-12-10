@@ -3,7 +3,7 @@ import threading
 import time
 from collections import deque
 import sys,traceback
-from worker import *
+from commandwork.worker import *
 
 class Controller(Worker):
 	def Init(self,logFile="log.txt",settings=None):
